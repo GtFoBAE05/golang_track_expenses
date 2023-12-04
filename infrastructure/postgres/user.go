@@ -1,16 +1,10 @@
 package postgres
 
 import (
-	"errors"
 	"golang_track_expense/domain/entity"
 
 	"github.com/google/uuid"
 	"github.com/jmoiron/sqlx"
-)
-
-var (
-	ErrUserAlreadyExist = errors.New("user already exists")
-	ErrUserNotFound     = errors.New("user not found")
 )
 
 type UserRepository struct {
@@ -29,7 +23,7 @@ func (u *UserRepository) GetByUserId(id uuid.UUID) (entity.User, error) {
 	err := u.Db.Get(&user, query, id)
 
 	if err != nil {
-		return user, ErrUserNotFound
+		return user, err
 	}
 
 	return user, nil
@@ -45,21 +39,11 @@ func (u *UserRepository) List() ([]entity.User, error) {
 	return users, err
 }
 
-func (u *UserRepository) Create(name string) error {
-
-	_, err := u.GetByUserName(name)
-	if err == nil {
-		return err
-	}
-
-	user, err := entity.NewUser(name)
-	if err != nil {
-		return err
-	}
+func (u *UserRepository) Create(user entity.User) error {
 
 	query := `INSERT INTO users (id, name) VALUES ($1, $2)`
 
-	_, err = u.Db.Exec(query, user.ID, user.Name)
+	_, err := u.Db.Exec(query, user.ID, user.Name)
 
 	return err
 }

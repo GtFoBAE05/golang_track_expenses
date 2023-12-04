@@ -1,18 +1,17 @@
 package repository
 
 import (
-	"golang_track_expense/domain/aggregate"
 	"golang_track_expense/domain/entity"
 
 	"github.com/google/uuid"
 )
 
 type TransactionRepository interface {
-	GetAll() (histories []aggregate.History, err error)
+	GetAll() (transactions []entity.Transaction, err error)
 
-	GetByTransactionId(transactionId uuid.UUID) (history aggregate.History, err error)
+	GetByTransactionId(transactionId uuid.UUID) (transaction entity.Transaction, err error)
 
-	GetByUserId(userId uuid.UUID) (history []aggregate.History, err error)
+	GetByUserId(userId uuid.UUID) (transactions []entity.Transaction, err error)
 
-	CreateOrder(trx entity.Transaction, user entity.User) (err error)
+	CreateOrder(entity.Transaction) (err error)
 }

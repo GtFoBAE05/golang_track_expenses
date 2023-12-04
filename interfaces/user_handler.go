@@ -44,7 +44,7 @@ func (uh *UserHandlers) GetUserByID(c *gin.Context) {
 }
 
 func (uh *UserHandlers) CreateUser(c *gin.Context) {
-	var body application.UserRequest
+	var body UserRequest
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid request payload"})
 		return
@@ -61,4 +61,8 @@ func (uh *UserHandlers) CreateUser(c *gin.Context) {
 	}
 
 	c.JSON(201, gin.H{"message": "User created successfully!"})
+}
+
+type UserRequest struct {
+	Name string `json:"name"`
 }

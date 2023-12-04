@@ -41,7 +41,11 @@ func main() {
 	userService := application.NewUserService(userRepository)
 	userHandlers := interfaces.NewUserHandler(userService)
 
-	interfaces.SetUserRoutes(router, userHandlers)
+	transactionRepository := postgres.NewTransactionRepository(db)
+	transactionService := application.NewTransactionService(transactionRepository)
+	transactionHandlers := interfaces.NewTransactionHandler(transactionService)
+
+	interfaces.SetRoutes(router, userHandlers, transactionHandlers)
 
 	router.Run(":8080")
 

@@ -13,5 +13,5 @@ type UserRepository interface {
 
 	GetByUserName(username string) (user entity.User, err error)
 
-	Create(name string) (err error)
+	Create(user entity.User) (err error)
 }
